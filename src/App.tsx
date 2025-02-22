@@ -13,6 +13,9 @@ function App() {
     palette: {
       primary: {
         main: '#22D3EE'
+      },
+      secondary: {
+        main: '#808080'
       }
   }})
 

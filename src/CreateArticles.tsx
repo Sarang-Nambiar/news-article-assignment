@@ -4,6 +4,7 @@ import "./Stylesheets/CreateArticles.css";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 interface Create_ArticlesProps {
   setVisible: (visible: boolean) => void;
@@ -11,7 +12,7 @@ interface Create_ArticlesProps {
 
 type FormFields = {
   article_title: string;
-  article_date: Date;
+  article_date: Dayjs;
   article_summary: string;
   article_publisher: string;
 };
@@ -19,7 +20,7 @@ type FormFields = {
 // Page to create a new article
 export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
   setVisible(true);
-  const { register, handleSubmit, control } = useForm<FormFields>();
+  const { register, handleSubmit, control, setError, reset, formState: { errors, isSubmitting } } = useForm<FormFields>();
   const sx = {
     backgroundColor: "white",
     borderRadius: "10px",
@@ -27,10 +28,24 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
   };
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    try {
+      console.log({ ...data, article_date: data.article_date.format("DD/MM/YYYY") });
+      reset({
+        article_title: "",
+        article_date: undefined,
+        article_summary: "",
+        article_publisher: "",
+      });
+    } catch(err) {
+      // Test 
+      setError("article_title", {
+        message: "An error occurred while submitting the form."
+      });
+    }
+
   };
   return (
-    <div className="container">
+    <div className="container create-articles">
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <h1>Create News Article</h1>
@@ -40,9 +55,16 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
         </Grid>
         <Grid item xs={4}>
           <TextField
-            {...register("article_title")}
+            {...register("article_title", {
+              required: "Article Title is required",
+              minLength: { value: 5, message: "Minimum length should be 5 characters." },  
+            })}
             fullWidth
             label="Article Title"
+            color="secondary"
+            defaultValue={null}
+            error={!!errors.article_title}
+            helperText={errors.article_title?.message}
             sx={sx}
           />
         </Grid>
@@ -50,12 +72,21 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
           <Controller
             name="article_date"
             control={control}
+            rules={{ required: "Article Date is required" }}
             render={({ field }) => (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   {...field}
                   label="Article Date"
+                  maxDate={dayjs()}
+                  defaultValue={null}
                   sx={{ ...sx, width: "100%" }}
+                  slotProps={{
+                    textField: {
+                      error: !!errors.article_date,
+                      helperText: errors.article_date?.message,
+                    }
+                  }}
                 />
               </LocalizationProvider>
             )}
@@ -63,18 +94,31 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
         </Grid>
         <Grid item xs={4}>
           <TextField
-            {...register("article_date")}
+            {...register("article_publisher", {
+              required: "Article Publisher is required",
+              minLength: { value: 5, message: "Minimum length should be 5 characters." },
+            })}
             fullWidth
             label="Article Publisher"
-            type="text"
+            color="secondary"
+            defaultValue={null}
+            error={!!errors.article_publisher}
+            helperText={errors.article_publisher?.message}
             sx={sx}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("article_summary")}
+            {...register("article_summary", {
+              required: "Article Summary is required",
+              minLength: { value: 10, message: "Minimum length should be 10 characters." },
+            })}
             fullWidth
             label="Article Summary"
+            color="secondary"
+            defaultValue={null}
+            error={!!errors.article_summary}
+            helperText={errors.article_summary?.message}
             multiline
             rows={4}
             sx={sx}
@@ -90,7 +134,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             fontWeight: "bold",
           }}
         >
-          <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+          <Button variant="contained" disabled={isSubmitting} type="submit" onClick={handleSubmit(onSubmit)}>
             Submit
           </Button>
         </Grid>
