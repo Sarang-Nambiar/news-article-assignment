@@ -5,6 +5,7 @@ import Home from './Home'
 import CreateArticles from './CreateArticles'
 import PageNotFound from './Components/PageNotFound'
 import Navbar from './Components/Navbar'
+import { ToastContainer, Bounce } from 'react-toastify';
 import { useState } from 'react'
 
 function App() {
@@ -21,6 +22,19 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer 
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+      transition={Bounce}
+      />
       <Navbar visible={visible} />
       <Routes>
         <Route path="/" element={<Home setVisible={setVisible} />} />
