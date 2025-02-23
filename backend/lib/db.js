@@ -4,7 +4,7 @@ const parseCSV = require('../utils/parser');
 const path = require('path');
 
 // TODO: Change the database path to in memory when done testing
-const db = new sqlite3.Database(path.join(__dirname, "../news-articles"), async (err) => {
+const db = new sqlite3.Database(":memory:", async (err) => {
     if (err) {
       console.error("Error connecting to database:", err.message);
       return;
@@ -16,7 +16,7 @@ const db = new sqlite3.Database(path.join(__dirname, "../news-articles"), async 
     try {
         const rows = await getQuery("SELECT * FROM Article LIMIT 1");
         if (!rows) {
-            data = await parseCSV(path.join(__dirname, "../data/Fake.csv"));
+            data = await parseCSV(path.join(__dirname, "../data/Fake3.csv"));
             await insertData(data);
             console.log("Data inserted successfully");
         }
@@ -74,6 +74,7 @@ function runQuery(query, params = []) {
             ] = row;
             
             if (!title || !summary || !publisher || !date) {
+              console.log(title, summary, publisher, date);
                 throw new Error("Invalid data");
             }
 

@@ -1,24 +1,39 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Home from './Home'
-import CreateArticles from './CreateArticles'
+import Home from './pages/Home/Home'
+import CreateArticles from './pages/CreateArticles/CreateArticles'
 import PageNotFound from './Components/PageNotFound'
 import Navbar from './Components/Navbar'
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useState } from 'react'
 
+interface ThemeProps {
+  primary: {
+    main: string
+    contrastText: string
+  }
+  secondary: {
+    main: string
+    contrastText: string
+  }
+}
+
+const originalTheme: ThemeProps = {
+  primary: {
+    main: '#22D3EE',
+    contrastText: "#000"
+  },
+  secondary: {
+    main: '#808080',
+    contrastText: "#fff"
+  },
+}
+
 function App() {
   const [visible, setVisible] = useState<boolean>(true)
   const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#22D3EE'
-      },
-      secondary: {
-        main: '#808080'
-      }
-  }})
+    palette: {...originalTheme}})
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,3 +61,5 @@ function App() {
 }
 
 export default App
+
+export { originalTheme };

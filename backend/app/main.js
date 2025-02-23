@@ -1,15 +1,26 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { getAllQuery, insertData, updateData } = require('../lib/db');
+const { getAllQuery, insertData, updateData, deleteData } = require('../lib/db');
 require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 8000;
+const LIMIT = 10;
 
 app.get('/api', (req, res) => {
     res.send('Hello from API');
+});
+
+app.get('/api/articles/count', async (req, res) => {
+    try {
+        const count = await getAllQuery('SELECT COUNT(*) FROM Article');
+        res.json(count[0]['COUNT(*)']);
+    } catch (err) {
+        console.error("Error loading article count. ", err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // Fetching all articles from the database
@@ -24,7 +35,7 @@ app.get('/api/articles', async (req, res) => {
     console.log("Received GET request from client.");
 
     try {
-        const articles = await getAllQuery(`SELECT * FROM Article LIMIT 10 OFFSET ${(parseInt(page) - 1) * 10}`);
+        const articles = await getAllQuery(`SELECT * FROM Article ORDER BY Date DESC LIMIT ${LIMIT} OFFSET ${(parseInt(page) - 1) * LIMIT}`);
         res.json(articles);
     } catch (err) {
         console.error("Error loading articles. ", err);
