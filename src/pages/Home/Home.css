@@ -14,3 +14,15 @@
 .no-articles-found {
     text-align: center;
 }
+
+@media (max-width: 1180px) {
+    .home {
+        padding-top: 15%;
+    }
+}
+
+@media (max-width: 720px) {
+    .home {
+        padding-top: 20%;
+    }
+}

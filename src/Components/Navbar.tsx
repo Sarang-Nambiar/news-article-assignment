@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import "../Stylesheets/Navbar.css";
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
+import { Button, Tooltip } from "@mui/material";
 
 interface NavbarProps {
   visible: boolean;
@@ -27,12 +29,16 @@ export default function Navbar({ visible }: NavbarProps) {
         style={{ display: visible ? "flex" : "none" }}
       >
         <div className="actions">
-          <IconButton onClick={() => (window.location.href = "/")}>
-            <HomeIcon color="secondary" />
-          </IconButton>
-          <IconButton onClick={() => window.location.reload()}>
-            <RefreshIcon color="secondary" />
-          </IconButton>
+          <Tooltip title="Home" arrow>
+            <IconButton onClick={() => (window.location.href = "/")}>
+              <HomeIcon color="secondary" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Refresh" arrow>
+            <IconButton onClick={() => window.location.reload()}>
+              <RefreshIcon color="secondary" />
+            </IconButton>
+          </Tooltip>
         </div>
 
         <div className="logo">
@@ -41,7 +47,14 @@ export default function Navbar({ visible }: NavbarProps) {
           </h1>
         </div>
         <div className="menu">
-          <a href="/create">Create</a>
+          <Tooltip title="Create Article" arrow>
+            <Button
+              onClick={() => (window.location.href = "/create")}
+              sx={{ borderRadius: "20px" }}
+            >
+              <AddIcon />
+            </Button>
+          </Tooltip>
         </div>
       </div>
     </>

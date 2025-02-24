@@ -89,13 +89,13 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
   return (
     <div className="container create-articles">
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <h1>Create/Update News Article</h1>
+        <Grid item xs={6} md={12}>
+          <h1 className="form-title">Create/Update News Article</h1>
         </Grid>
         <Grid item xs={12}>
-          <span>Fill out the form below to create/update a news article</span>
+          <span className="form-description">Fill out the form below to create/update a news article</span>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <TextField
             {...register("article_title", {
               required: "Article Title is required",
@@ -113,7 +113,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             sx={sx}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Controller
             name="article_date"
             control={control}
@@ -137,7 +137,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             )}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <TextField
             {...register("article_publisher", {
               required: "Article Publisher is required",
@@ -175,7 +175,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             error={!!errors.article_summary}
             helperText={errors.article_summary?.message}
             multiline
-            rows={4}
+            rows={7}
             sx={sx}
           />
         </Grid>

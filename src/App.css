@@ -3,3 +3,11 @@
   height: 100%;
   padding: 7% 15% 7% 15%;
 }
+
+
+
+@media (max-width: 1600px) {
+  .container {
+    padding-top: 10%;
+  }
+}
