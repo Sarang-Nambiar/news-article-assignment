@@ -1,22 +1,20 @@
 .create-articles {
     padding-top: 10%;
     overflow: hidden;
+    padding-bottom: 0;
 }
 
 .form-title {
     font-size: 2em;
 }
 
-@media (max-width: 1600px) {
-
-    .form-title {
-        font-size: 1.5emem;
-    }
-}
-
 @media (max-width: 1280px) {
     .create-articles {
-        padding-top: 15%;
+        padding-top: 10%;
+    }
+
+    .form-title {
+        font-size: 1.5em;
     }
 }
 

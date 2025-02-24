@@ -15,8 +15,8 @@ interface Create_ArticlesProps {
 }
 
 interface UpdateParams {
-  oldData: CardData
-  update: boolean
+  oldData: CardData;
+  update: boolean;
 }
 
 type FormFields = {
@@ -31,7 +31,9 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
   setVisible(true);
   const VITE_BACKEND_HOST: string = import.meta.env.VITE_BACKEND_HOST as string;
   const { state } = useLocation();
-  let { oldData, update } = !!state ? state as UpdateParams : { oldData: null, update: false };
+  let { oldData, update } = !!state
+    ? (state as UpdateParams)
+    : { oldData: null, update: false };
 
   const {
     register,
@@ -47,37 +49,40 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
   };
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    if(!!update) {
-      axios.put(`${VITE_BACKEND_HOST}/api/articles/${oldData?.id}`, {
-        data: {
-          title: data.article_title,
-          date: data.article_date?.format("YYYY-MM-DD"),
-          summary: data.article_summary,
-          publisher: data.article_publisher,
-        },
-      }).then((response) => {
-        console.log(response);
-        toast.success("Article updated successfully.");
-      }).catch((err) => {
-        toast.error("Failed to update article: " + err.response.data.message);
-      })
+    if (!!update) {
+      axios
+        .put(`${VITE_BACKEND_HOST}/api/articles/${oldData?.id}`, {
+          data: {
+            title: data.article_title,
+            date: data.article_date?.format("YYYY-MM-DD"),
+            summary: data.article_summary,
+            publisher: data.article_publisher,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          toast.success("Article updated successfully.");
+        })
+        .catch((err) => {
+          toast.error("Failed to update article: " + err.response.data.message);
+        });
     } else {
       axios
-      .post(`${VITE_BACKEND_HOST}/api/articles`, {
-        data: {
-          title: data.article_title,
-          date: data.article_date?.format("YYYY-MM-DD"),
-          summary: data.article_summary,
-          publisher: data.article_publisher,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        toast.success("Article created successfully.");
-      })
-      .catch((err) => {
-        toast.error("Failed to create article: " + err.response.data.message);
-      });
+        .post(`${VITE_BACKEND_HOST}/api/articles`, {
+          data: {
+            title: data.article_title,
+            date: data.article_date?.format("YYYY-MM-DD"),
+            summary: data.article_summary,
+            publisher: data.article_publisher,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          toast.success("Article created successfully.");
+        })
+        .catch((err) => {
+          toast.error("Failed to create article: " + err.response.data.message);
+        });
     }
     reset({
       article_title: "",
@@ -93,7 +98,9 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
           <h1 className="form-title">Create/Update News Article</h1>
         </Grid>
         <Grid item xs={12}>
-          <span className="form-description">Fill out the form below to create/update a news article</span>
+          <span className="form-description">
+            Fill out the form below to create/update a news article
+          </span>
         </Grid>
         <Grid item xs={12} md={4}>
           <TextField
@@ -117,7 +124,13 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
           <Controller
             name="article_date"
             control={control}
-            rules={{ required: "Article Date is required" }}
+            rules={{
+              required: "Article Date is required",
+              validate: (value: Dayjs) =>
+                value.isAfter(dayjs())
+                  ? "Article Date should be in the future"
+                  : true,
+            }}
             defaultValue={!!update ? dayjs(oldData?.Date) : undefined}
             render={({ field }) => (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -148,7 +161,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
               maxLength: {
                 value: 40,
                 message: "Maximum length should be 40 characters.",
-              }
+              },
             })}
             fullWidth
             label="Article Publisher"
@@ -175,7 +188,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             error={!!errors.article_summary}
             helperText={errors.article_summary?.message}
             multiline
-            rows={7}
+            rows={5}
             sx={sx}
           />
         </Grid>
@@ -194,7 +207,7 @@ export default function CreateArticles({ setVisible }: Create_ArticlesProps) {
             disabled={isSubmitting}
             type="submit"
             onClick={handleSubmit(onSubmit)}
-            sx={{color:"black"}}
+            sx={{ color: "black" }}
           >
             Submit
           </Button>
