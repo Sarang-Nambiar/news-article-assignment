@@ -2,7 +2,7 @@
 This is a simple news article website that allows users to view news articles and their details. It also allows users to create, update and delete news articles.
 
 ## Preview of the website
-put image here
+![Screenshot 2025-02-24 214648](https://github.com/user-attachments/assets/25279012-c181-402b-8771-38d9e1a4f330)
 
 ## Features implemented
 - Users can view the latest news articles from a database. 
