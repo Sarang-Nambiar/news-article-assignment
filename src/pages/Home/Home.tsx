@@ -7,9 +7,6 @@ import { toast } from "react-toastify";
 import { createTheme, Divider, ThemeProvider } from "@mui/material";
 import { originalTheme } from "../../App";
 
-// ORDER BY DATE - YYYY-MM-DD
-// Responsiveness
-
 interface HomeProps {
   setVisible: (visible: boolean) => void;
 }
