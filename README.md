@@ -52,10 +52,7 @@ The backend server has the following endpoints:
 - DELETE /api/article/:id - This endpoint allows users to delete a news article with the specified id.
 
 ### Frontend
-- Navigate to the frontend directory of the project:
-    ``` bash
-    cd frontend
-    ```
+- Navigate to the frontend directory of the project.
 - Install the required dependencies:
     ``` bash
     npm install
